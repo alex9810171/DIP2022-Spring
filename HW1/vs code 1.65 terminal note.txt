@@ -1,0 +1,4 @@
+在Windows Terminal內先：
+cd D:\user\Documents\Alex\Code\2022_DIP\HW1
+然後執行：
+& C:/Users/user/anaconda3/Scripts/conda.exe run -n pytorch-1.8.1-LTS --no-capture-output --live-stream python d:/user/Documents/Alex/Code/2022_DIP/HW1/dip_hw1.py

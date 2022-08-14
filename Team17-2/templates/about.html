@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Document Image Processor</title>
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+        crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/axios@0.26.1/dist/axios.min.js"></script>
+    <script src="{{ url_for('static', filename='js/uploadImage.js') }}" defer></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+    <!-- navigation bar start -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">
+                <img src="{{ url_for('static', filename='outline_document_scanner_black_48dp.png') }}" alt="" width="30"
+                    height="30" class="d-inline-block align-text-top">
+                Document Image Processor
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/preprocessing">Image Preprocessing</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/enhancement">Image Enhancement</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/ocr">OCR</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">About</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- navigation bar end -->
+
+    <!-- main content start -->
+    <div class="my-3 mx-auto">
+        <p class="text-center">This project uses OpenCV to perform most of algorithms.<br>
+            Color balance feature is taken from this <a
+                href="https://gist.github.com/DavidYKay/9dad6c4ab0d8d7dbf3dc">link</a>, and the original
+            algorithm is described <a
+                href="http://web.stanford.edu/~sujason/ColorBalancing/simplestcb.html">here</a>.<br>
+            The icon is taken from <a href="https://fonts.google.com/icons">Google Fonts</a></p>
+        <p class="text-center text-danger">Every output image will be uploaded to Imgur, which means anyone with the
+            link can access your output, so please be careful.</p>
+        </p>
+        <p class="text-center">
+            Created by:<br>
+            Bo-Yi Tsai, r10944014@g.ntu.edu.tw<br>
+            Yu-Wei Chen, r09942066@g.ntu.edu.tw<br>
+            Alex Hsu, alex9810171@gmail.com<br>
+        </p>
+    </div>
+
+    <!-- main content end -->
+</body>
+
+</html>

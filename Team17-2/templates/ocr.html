@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Document Image Processor</title>
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+        crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/axios@0.26.1/dist/axios.min.js"></script>
+    <script src="{{ url_for('static', filename='js/ocr.js') }}" defer></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+    <!-- navigation bar start -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">
+                <img src="{{ url_for('static', filename='outline_document_scanner_black_48dp.png') }}" alt="" width="30"
+                    height="30" class="d-inline-block align-text-top">
+                Document Image Processor
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/preprocessing">Image Preprocessing</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/enhancement">Image Enhancement</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">OCR</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/about">About</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- navigation bar end -->
+
+    <!-- main content start -->
+    <div>
+        <div class="row m-3 justify-content-between">
+            <div class="col-12 col-xl-4">
+                <p class="text-center">Input Image <em>(Size Limit: 5MB)</em></p>
+                <div class="row mx-auto justify-content-center align-items-center">
+                    <form id="upload_form" class="col-auto">
+                        <input class="form-control" type="file" name="image" id="formFile">
+                    </form>
+                    <div class="col-auto">
+                    </div>
+                </div>
+                <div class="my-3 mx-auto">
+                    <img id="input_image" class="img-fluid mx-auto d-block" alt="" src="{{ image_url }}">
+                </div>
+            </div>
+            <div class="col-12 col-xl-4">
+                <p class="text-center">OCR</p>
+                <p class="text-center m-4">Perform OCR method and get texts</p>
+                <div class="m-3 bordered">
+                    <form id="ocr_options">
+                        <div class="row mt-3 mx-auto justify-content-center align-items-center">
+                            <div class="input-group mb-3 col-auto">
+                                <span class="input-group-text">Space Size</span>
+                                <input type="number" class="form-control" name="space" value=5>
+                            </div>
+                        </div>
+                        <div class="row mx-auto justify-content-center align-items-center">
+                            <div class="input-group mb-3 col-auto">
+                                <span class="input-group-text">Newline Size</span>
+                                <input type="number" class="form-control" name="newline" value=15>
+                            </div>
+                        </div>
+                        <div class="row mx-auto justify-content-center align-items-center">
+                            <div class="form-check form-switch col-auto mb-3">
+                                <input class="form-check-input" type="checkbox" id="upperOnly" name="upperOnly" checked>
+                                <label class="form-check-label" for="upperOnly">
+                                    Uppercase only
+                                </label>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="row mx-auto justify-content-center align-items-center">
+                        <div class="col-auto mb-3">
+                            <button id="ocr_button" class="btn btn-primary">
+                                <span id="ocr_spinner" class="spinner-border spinner-border-sm d-none" role="status"
+                                    aria-hidden="true"></span>
+                                Apply
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-xl-4">
+                <p class="text-center">Results</p>
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="mark-tab" data-bs-toggle="tab"
+                            data-bs-target="#mark-tab-pane" type="button" role="tab" aria-controls="mark-tab-pane"
+                            aria-selected="true">Mark</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="text-tab" data-bs-toggle="tab" data-bs-target="#text-tab-pane"
+                            type="button" role="tab" aria-controls="text-tab-pane" aria-selected="false"
+                            disabled>Text</button>
+                    </li>
+                </ul>
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="mark-tab-pane" role="tabpanel" aria-labelledby="mark-tab"
+                        tabindex="0">
+                        <img id="result_image" class="my-3 img-fluid mx-auto d-block" alt="">
+                    </div>
+                    <div class="tab-pane fade" id="text-tab-pane" role="tabpanel" aria-labelledby="text-tab"
+                        tabindex="0">
+                        <div class="form-group my-3 mx-auto">
+                            <textarea class="form-control" id="sentence" rows="20"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- main content end -->
+</body>
+
+</html>

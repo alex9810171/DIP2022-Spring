@@ -1,0 +1,6 @@
+__pycache__/
+submission/
+*.docx
+*.pdf
+*.sh
+*.zip
